@@ -1031,18 +1031,18 @@ namespace Rallec.LSky
 			m_SunTransform.transform.localPosition = SunPosition;
 			m_SunTransform.transform.LookAt(m_Transform, Vector3.forward);
 
-			// Set sun direction in world space.
-			Shader.SetGlobalVector(lsky_WorldSunDirectionID, SunDirection);
+            /// Set sun direction in local space.
+            Shader.SetGlobalVector(lsky_LocalSunDirectionID, SunDirection);
 
-			// Set sun direction in local space.
-			Shader.SetGlobalVector(lsky_LocalSunDirectionID, m_Transform.InverseTransformDirection(SunDirection));
-			//======================================================================================================
+            // Set sun direction in world space.
+            Shader.SetGlobalVector(lsky_WorldSunDirectionID, m_Transform.InverseTransformDirection(SunDirection));
+            //======================================================================================================
 
-			// Moon position
-			//------------------------------------------------------------------------------------------------------
+            // Moon position
+            //------------------------------------------------------------------------------------------------------
 
-			// Set moon position to sun transform.
-			m_MoonTransform.transform.localPosition = MoonPosition;
+            // Set moon position to sun transform.
+            m_MoonTransform.transform.localPosition = MoonPosition;
 			m_MoonTransform.transform.LookAt(m_Transform, Vector3.down);
 
 			// Set moon direction in world space.
