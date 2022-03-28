@@ -33,10 +33,10 @@ namespace Rallec.LSky
 		}
 
 
-		public  void InstantiateCamera(string rootName, string parentName, string camName)
+		public  void InstantiateCamera(string parentName, string camName)
         {
 
-        	Instantiate(rootName, parentName, camName);
+        	Instantiate(parentName, camName);
 
 			var cam = gameObject.GetComponent<Camera>();
 

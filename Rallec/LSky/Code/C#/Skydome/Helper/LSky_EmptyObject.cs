@@ -57,8 +57,9 @@ namespace Rallec.LSky
 
             if(gameObject == null)
             {
-				// Check if exist gameobject with this name.
-                var childObj = GameObject.Find("/" + parentName + "/" + name); 
+                // Check if exist gameobject with this name.
+                var childObj = GameObject.Find(parentName).transform.Find(name).gameObject;
+
 
                 if (childObj != null)
                     gameObject = childObj;
@@ -72,28 +73,6 @@ namespace Rallec.LSky
 
         }
 
-        
-		public virtual void Instantiate(string rootName, string parentName, string name)
-        {
-
-            if(gameObject == null)
-            {
-				// Check if exist gameobject with this name.
-                var childObj = GameObject.Find("/" + rootName + "/" + parentName + "/" + name); 
-
-                if (childObj != null)
-                    gameObject = childObj;
-                else
-                    gameObject = new GameObject(name);
-
-            }
-
-            if(transform == null)
-                transform = gameObject.transform; // Get transform.
-
-        }
-
-		
 	}
 
 }

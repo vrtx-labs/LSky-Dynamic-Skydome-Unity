@@ -792,7 +792,7 @@ namespace Rallec.LSky
 			m_NearSpaceTransform.InitTransform(m_Transform, Vector3.zero);
 			//------------------------------------------------------------------------------------------------
 
-			m_MoonCamera.InstantiateCamera(this.name, m_MoonTransform.gameObject.name, "Moon Render Camera");
+			m_MoonCamera.InstantiateCamera(m_MoonTransform.gameObject.name, "Moon Render Camera");
 			m_MoonCamera.InitTransform(m_MoonTransform.transform, new Vector3(0,0,2));
 			m_MoonCamera.transform.localEulerAngles  = new Vector3(0,180,0);
 			InitMoonCamera();
