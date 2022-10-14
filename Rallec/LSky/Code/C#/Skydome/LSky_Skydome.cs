@@ -1623,6 +1623,24 @@ namespace Rallec.LSky
 			set { m_CloudsCoverage = value; }
 		}
 
+		public float WavelengthR
+		{
+			get { return m_WavelengthR; }
+			set { m_WavelengthR = value; }
+		}
+
+		public float WavelengthG
+		{
+			get { return m_WavelengthG; }
+			set { m_WavelengthG = value; }
+		}
+
+		public float WavelengthB
+		{
+			get { return m_WavelengthB; }
+			set { m_WavelengthB = value; }
+		}
+
 		#endregion
 
 		#region |Accessors|General|
