@@ -1617,6 +1617,12 @@ namespace Rallec.LSky
 			set{ m_DomeRadius = value; }
 		}
 
+		public float CloudCoverage
+		{
+			get { return m_CloudsCoverage; }
+			set { m_CloudsCoverage = value; }
+		}
+
 		#endregion
 
 		#region |Accessors|General|
