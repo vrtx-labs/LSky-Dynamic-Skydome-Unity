@@ -1045,7 +1045,10 @@ namespace Rallec.LSky
             m_MoonTransform.transform.localPosition = MoonPosition;
 			m_MoonTransform.transform.LookAt(m_Transform, Vector3.down);
 
-			// Set moon direction in local space.
+			// Set moon local rotation to its world rotation to take the parents rotation into account.
+			m_MoonTransform.transform.localEulerAngles = m_MoonTransform.transform.eulerAngles;
+
+			// Set moon direction in local space (based on moon transform).
 			Shader.SetGlobalVector(lsky_LocalMoonDirectionID, MoonDirection);
 			//======================================================================================================
 
