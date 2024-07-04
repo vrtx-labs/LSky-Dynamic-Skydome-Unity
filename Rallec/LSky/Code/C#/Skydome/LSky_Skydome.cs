@@ -510,28 +510,44 @@ namespace Rallec.LSky
 
 		[SerializeField] private float m_CloudsRotationSpeed = 0.5f;
 
-		// Textures.
-		//------------------------------------------------------------------------------
-		[SerializeField] private Texture2D m_CloudsTexture = null;
-		[SerializeField] private Vector2 m_CloudsSize = Vector2.one;
-		[SerializeField] private Vector2 m_CloudsTexOffset = Vector2.zero;
+		// Type
+		// ------------------------------------------------------------------------------
+		[SerializeField] private bool m_NoiseBasedClouds = false;
 		//==============================================================================
 
 		// Color.
 		//------------------------------------------------------------------------------
         [SerializeField] Gradient m_CloudsColor = new Gradient();
+		[SerializeField] Gradient m_CloudsEdgeColor = new Gradient();
 		[SerializeField] Gradient m_CloudsMoonColor = new Gradient();
-        [SerializeField, Range(0.0f, 20f)] private float m_CloudsIntensity = 1.0f;
+        [SerializeField, Range(0.0f, 0.1f)] private float m_CloudsEdgeColorHeight = 0.03f;
+        [SerializeField, Range(0.0f, 20f)] private float m_CloudsTransparency = 1.0f;
 		//==============================================================================
 
 
-		// Density.
+		// Shape.
 		//------------------------------------------------------------------------------
-		[SerializeField, Range(0, 20f)] private float m_CloudsDensity = 0.3f;
-		[SerializeField, Range(0, 1.0f)] private float m_CloudsCoverage = 0.5f;
-		//==============================================================================
+		[SerializeField] private float m_CloudsNoiseScale = 10f;
+		[SerializeField, Range(0, 10f)] private float m_CloudsNoisePower = 1.8f;
+		[SerializeField, Range(0, 1f)] private float m_CloudsClipping = 0.6f;
+		[SerializeField, Range(0, 1f)] private float m_CloudsSmoothness = 1f;
+		[SerializeField] private float m_CloudsDistortionScale = 35.5f;
+		[SerializeField, Range(0, 0.2f)] private float m_CloudsDistortion = 0.05f;
+        //==============================================================================
 
-		private float m_CloudsYAngle;
+        // Textures.
+        //------------------------------------------------------------------------------
+        [SerializeField] private Texture2D m_CloudsTexture = null;
+        [SerializeField] private Vector2 m_CloudsSize = Vector2.one;
+        [SerializeField] private Vector2 m_CloudsTexOffset = Vector2.zero;
+        //==============================================================================
+
+        // Shape.
+        //------------------------------------------------------------------------------
+        [SerializeField, Range(0, 20f)] private float m_CloudsDensity = 0.3f;
+        [SerializeField, Range(0, 1.0f)] private float m_CloudsCoverage = 0.5f;
+
+        private float m_CloudsYAngle;
 
 		#endregion
 
@@ -710,19 +726,30 @@ namespace Rallec.LSky
 
 		//
 		
-		//
-		public int lsky_CloudsCoverageID{ get; private set; }
-		public int lsky_CloudsDensityID{ get; private set; }
+		// Clouds
+		public int lsky_CloudsTypeID{ get; private set; }
+		public int lsky_CloudsColorID{ get; private set; }
+		public int lsky_CloudsEdgeColorID{ get; private set; }
+		public int lsky_CloudsEdgeColorHeightID{ get; private set; }
+		public int lsky_CloudsTransparencyID{ get; private set; }
+		public int lsky_CloudsNoiseScaleID{ get; private set; }
+		public int lsky_CloudsNoisePowerID{ get; private set; }
+		public int lsky_CloudsClippingID{ get; private set; }
+		public int lsky_CloudsSmoothnessID{ get; private set; }
+		public int lsky_CloudsDistortionScaleID{ get; private set; }
+		public int lsky_CloudsDistortionID{ get; private set; }
+        public int lsky_CloudsCoverageID { get; private set; }
+        public int lsky_CloudsDensityID { get; private set; }
 
-		#endregion
+        #endregion
 
 
-		//-----------------------------------------Methods------------------------------------------
-		//==========================================================================================
+        //-----------------------------------------Methods------------------------------------------
+        //==========================================================================================
 
-		#region |Initialized| 
+        #region |Initialized| 
 
-		private void Awake()
+        private void Awake()
 		{
 
 			// Cache transform component.
@@ -897,17 +924,31 @@ namespace Rallec.LSky
 			lsky_SunEID                   = Shader.PropertyToID("lsky_SunE");
 			lsky_MoonEID                  = Shader.PropertyToID("lsky_MoonE");
 			lsky_GroundColorID            = Shader.PropertyToID("lsky_GroundColor");
-			//===============================================================================
+            //===============================================================================
 
-			// Clouds.
-			//-------------------------------------------------------------------------------
-			lsky_CloudsCoverageID     = Shader.PropertyToID("lsky_CloudsCoverage");
-			lsky_CloudsDensityID      = Shader.PropertyToID("lsky_CloudsDensity");
-			//===============================================================================
+            // Clouds.
+            //-------------------------------------------------------------------------------
+            lsky_CloudsTypeID = Shader.PropertyToID("_NoiseBasedClouds");
+
+            lsky_CloudsColorID = Shader.PropertyToID("_Color");
+            lsky_CloudsEdgeColorID = Shader.PropertyToID("_EdgeColor");
+            lsky_CloudsEdgeColorHeightID = Shader.PropertyToID("_ColorEdgeHeight");
+            lsky_CloudsTransparencyID = Shader.PropertyToID("_Transparency");
+
+            lsky_CloudsNoiseScaleID = Shader.PropertyToID("_NoiseScale");
+            lsky_CloudsNoisePowerID = Shader.PropertyToID("_Power");
+            lsky_CloudsClippingID = Shader.PropertyToID("_Clipping");
+            lsky_CloudsSmoothnessID = Shader.PropertyToID("_Smoothness");
+            lsky_CloudsDistortionScaleID = Shader.PropertyToID("_DistortionNoiseScale");
+			lsky_CloudsDistortionID = Shader.PropertyToID("_Distortion");
+
+            lsky_CloudsCoverageID = Shader.PropertyToID("lsky_CloudsCoverage");
+            lsky_CloudsDensityID = Shader.PropertyToID("lsky_CloudsDensity");
+            //===============================================================================
 
 
 
-		}
+        }
 
 		#endregion
 
@@ -918,11 +959,11 @@ namespace Rallec.LSky
 		public void InternalUpdate()
 		{
 
-			// General Settings
-			//----------------------------------------------------------------------------
+            // General Settings
+            //----------------------------------------------------------------------------
 
-			// Set global matrices.
-			Shader.SetGlobalMatrix(lsky_ObjectToWorldID, m_Transform.localToWorldMatrix);
+            // Set global matrices.
+            Shader.SetGlobalMatrix(lsky_ObjectToWorldID, m_Transform.localToWorldMatrix);
 			Shader.SetGlobalMatrix(lsky_WorldToObjectID, m_Transform.worldToLocalMatrix);
 			//-----------------------------------------------------------------------------
 
@@ -1474,7 +1515,6 @@ namespace Rallec.LSky
 
 		private void Clouds()
 		{
-
 			
 			if(m_RenderClouds)
 			{
@@ -1489,29 +1529,40 @@ namespace Rallec.LSky
 					m_CloudsTransform.transform.localRotation = Quaternion.Euler(m_CloudsTransform.transform.localEulerAngles.x, m_CloudsYAngle, m_CloudsTransform.transform.localEulerAngles.z);
 				}
 
-				//cloudsMaterial.shader = m_Resources.cloudsShader;
+                // Type
+                float noiseBased = m_NoiseBasedClouds ? 1f : 0f;
+                m_Resources.cloudsMaterial.SetFloat(lsky_CloudsTypeID, noiseBased);
 
+				// Color
 				Color col = m_CloudsColor.Evaluate(EvaluateTimeBySun);
+				Color colEdge = m_CloudsEdgeColor.Evaluate(EvaluateTimeBySun);
 
 				if(m_NightRayleighMode == LSky_NightRayleighMode.Moon)
 					col += m_CloudsMoonColor.Evaluate(EvaluateTimeByMoon)*MoonPhasesIntensityMultiplier;
 
-				m_Resources.cloudsMaterial.SetColor(lsky_TintID, col);
-				m_Resources.cloudsMaterial.SetFloat(lsky_IntensityID, m_CloudsIntensity);
+                m_Resources.cloudsMaterial.SetColor(lsky_CloudsColorID, col);
+                m_Resources.cloudsMaterial.SetColor(lsky_CloudsEdgeColorID, colEdge);
+                m_Resources.cloudsMaterial.SetFloat(lsky_CloudsEdgeColorHeightID, m_CloudsEdgeColorHeight);
 
-				m_Resources.cloudsMaterial.SetTexture(lsky_MainTexID, m_CloudsTexture);
+                // Shape (Noise)
+                m_Resources.cloudsMaterial.SetFloat(lsky_CloudsNoiseScaleID, m_CloudsNoiseScale);
+                m_Resources.cloudsMaterial.SetFloat(lsky_CloudsNoisePowerID, m_CloudsNoisePower);
+                m_Resources.cloudsMaterial.SetFloat(lsky_CloudsClippingID, m_CloudsClipping);
+                m_Resources.cloudsMaterial.SetFloat(lsky_CloudsSmoothnessID, m_CloudsSmoothness);
+                m_Resources.cloudsMaterial.SetFloat(lsky_CloudsDistortionScaleID, m_CloudsDistortionScale);
+                m_Resources.cloudsMaterial.SetFloat(lsky_CloudsDistortionID, m_CloudsDistortion);
 
-				m_Resources.cloudsMaterial.SetTextureScale(lsky_MainTexID, m_CloudsSize);
-				m_Resources.cloudsMaterial.SetTextureOffset(lsky_MainTexID, m_CloudsTexOffset);
+                // Texture
+                m_Resources.cloudsMaterial.SetTexture(lsky_MainTexID, m_CloudsTexture);
+                m_Resources.cloudsMaterial.SetTextureScale(lsky_MainTexID, m_CloudsSize);
+                m_Resources.cloudsMaterial.SetTextureOffset(lsky_MainTexID, m_CloudsTexOffset);
 
-				m_Resources.cloudsMaterial.SetFloat(lsky_CloudsCoverageID, m_CloudsCoverage);
-				m_Resources.cloudsMaterial.SetFloat(lsky_CloudsDensityID, m_CloudsDensity);
+				// Shape (Texture)
+                m_Resources.cloudsMaterial.SetFloat(lsky_CloudsCoverageID, m_CloudsCoverage);
+                m_Resources.cloudsMaterial.SetFloat(lsky_CloudsDensityID, m_CloudsDensity);
 
-				Graphics.DrawMesh(m_Resources.hemisphereLOD2, m_CloudsTransform.transform.localToWorldMatrix, m_Resources.cloudsMaterial, m_CloudsLayerIndex);
-			}
-
-
-
+                Graphics.DrawMesh(m_Resources.hemisphereLOD2, m_CloudsTransform.transform.localToWorldMatrix, m_Resources.cloudsMaterial, m_CloudsLayerIndex);
+            }
 		}
 
 
