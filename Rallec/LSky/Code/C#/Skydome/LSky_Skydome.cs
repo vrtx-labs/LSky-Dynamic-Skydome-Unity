@@ -518,6 +518,7 @@ namespace Rallec.LSky
 		// Color.
 		//------------------------------------------------------------------------------
         [SerializeField] Gradient m_CloudsColor = new Gradient();
+		[SerializeField] Color m_CloudsTint = new Color(1,1,1);
 		[SerializeField] Gradient m_CloudsEdgeColor = new Gradient();
 		[SerializeField] Gradient m_CloudsMoonColor = new Gradient();
         [SerializeField, Range(0.0f, 0.1f)] private float m_CloudsEdgeColorHeight = 0.03f;
@@ -1535,7 +1536,9 @@ namespace Rallec.LSky
 
 				// Color
 				Color col = m_CloudsColor.Evaluate(EvaluateTimeBySun);
+				col *= m_CloudsTint;
 				Color colEdge = m_CloudsEdgeColor.Evaluate(EvaluateTimeBySun);
+				colEdge *= m_CloudsTint;
 
 				if(m_NightRayleighMode == LSky_NightRayleighMode.Moon)
 					col += m_CloudsMoonColor.Evaluate(EvaluateTimeByMoon)*MoonPhasesIntensityMultiplier;
@@ -1665,16 +1668,35 @@ namespace Rallec.LSky
 
 		#region |Accessors|Dome|
 
-		public float DomeRadius
+		public AnimationCurve SunLightIntensity
+		{
+			get { return m_SunLightIntensity; }
+			set { m_SunLightIntensity = value;}
+		}
+
+
+        public float DomeRadius
 		{
 			get{ return m_DomeRadius;  }
 			set{ m_DomeRadius = value; }
+		}
+
+        public Color CloudsTint
+		{
+			get { return m_CloudsTint; }
+			set { m_CloudsTint = value;}
 		}
 
 		public float CloudCoverage
 		{
 			get { return m_CloudsCoverage; }
 			set { m_CloudsCoverage = value; }
+		}
+
+        public float CloudDensity
+		{
+			get { return m_CloudsNoisePower; }
+			set { m_CloudsNoisePower = value;}
 		}
 
 		public float WavelengthR
@@ -1695,11 +1717,29 @@ namespace Rallec.LSky
 			set { m_WavelengthB = value; }
 		}
 
-		#endregion
+		public Gradient UnityFogColor
+		{
+			get { return m_UnityFogColor; }
+			set { m_UnityFogColor = value; }
+		}
 
-		#region |Accessors|General|
+		public float UnityFogStartDistance
+		{
+			get { return m_UnityFogStartDistance; }
+			set { m_UnityFogStartDistance = value; }
+		}
 
-		public bool ApplyFastTonemaping
+		public float UnityFogEndDistance
+		{ 
+			get { return m_UnityFogEndDistance; }
+			set { m_UnityFogEndDistance = value; }
+		}
+
+        #endregion
+
+        #region |Accessors|General|
+
+        public bool ApplyFastTonemaping
 		{
 			get{ return m_ApplyFastTonemaping;  }
 			set{ m_ApplyFastTonemaping = value; }

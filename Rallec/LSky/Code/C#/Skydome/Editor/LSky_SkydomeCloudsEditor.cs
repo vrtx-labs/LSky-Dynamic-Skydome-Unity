@@ -48,6 +48,7 @@ namespace Rallec.LSky
 
 		SerializedProperty m_CloudsColor, m_CloudsMoonColor;
 		SerializedProperty m_CloudsEdgeColor;
+        SerializedProperty m_CloudsTint;
 		SerializedProperty m_CloudsEdgeColorHeight;
 		//=======================================
 
@@ -113,6 +114,7 @@ namespace Rallec.LSky
 			m_CloudsMoonColor = serObj.FindProperty("m_CloudsMoonColor");
 			m_CloudsEdgeColor = serObj.FindProperty("m_CloudsEdgeColor");
 			m_CloudsEdgeColorHeight = serObj.FindProperty("m_CloudsEdgeColorHeight");
+            m_CloudsTint = serObj.FindProperty("m_CloudsTint");
 			//=======================================================================
 
 			// Shape.
@@ -170,6 +172,8 @@ namespace Rallec.LSky
                 EditorGUILayout.PropertyField(m_CloudsEdgeColor, new GUIContent("Clouds Edge Color"));
                 EditorGUILayout.HelpBox("Evaluate Gradient time by full sun cicle", MessageType.Info);
                 EditorGUILayout.EndVertical();
+
+                EditorGUILayout.PropertyField(m_CloudsTint, new GUIContent("Clouds Tint"));
 
                 EditorGUILayout.PropertyField(m_CloudsEdgeColorHeight, new GUIContent("Clouds Edge Color Height"));
                 R_EditorGUIUtility.Separator(2);
