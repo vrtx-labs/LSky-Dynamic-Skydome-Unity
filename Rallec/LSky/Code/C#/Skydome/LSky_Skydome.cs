@@ -1717,13 +1717,25 @@ namespace Rallec.LSky
 			set { m_WavelengthB = value; }
 		}
 
-		public Gradient UnityFogColor
+		public FogMode UnityFogMode 
+		{
+			get { return m_UnityFogMode; }
+			set { m_UnityFogMode = value;}
+		}
+
+        public Gradient UnityFogColor
 		{
 			get { return m_UnityFogColor; }
 			set { m_UnityFogColor = value; }
 		}
 
-		public float UnityFogStartDistance
+        public float UnityFogDensity
+        {
+            get { return m_UnityFogDensity; }
+            set { m_UnityFogDensity = value; }
+        }
+
+        public float UnityFogStartDistance
 		{
 			get { return m_UnityFogStartDistance; }
 			set { m_UnityFogStartDistance = value; }
