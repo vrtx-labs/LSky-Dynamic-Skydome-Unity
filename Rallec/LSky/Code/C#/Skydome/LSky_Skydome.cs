@@ -1672,6 +1672,10 @@ namespace Rallec.LSky
 		{
 			get { return m_SunLightIntensity; }
 			set { m_SunLightIntensity = value;}
+		}public AnimationCurve MoonLightIntensity
+        {
+			get { return m_MoonLightIntensity; }
+			set { m_MoonLightIntensity = value;}
 		}
 
 
