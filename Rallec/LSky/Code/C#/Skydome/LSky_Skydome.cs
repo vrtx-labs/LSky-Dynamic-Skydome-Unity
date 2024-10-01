@@ -518,7 +518,7 @@ namespace Rallec.LSky
 		// Color.
 		//------------------------------------------------------------------------------
         [SerializeField] Gradient m_CloudsColor = new Gradient();
-		[SerializeField] Color m_CloudsTint = new Color(1,1,1);
+		[SerializeField] Color m_CloudTint = new Color(1,1,1);
 		[SerializeField] Gradient m_CloudsEdgeColor = new Gradient();
 		[SerializeField] Gradient m_CloudsMoonColor = new Gradient();
         [SerializeField, Range(0.0f, 0.1f)] private float m_CloudsEdgeColorHeight = 0.03f;
@@ -1536,9 +1536,9 @@ namespace Rallec.LSky
 
 				// Color
 				Color col = m_CloudsColor.Evaluate(EvaluateTimeBySun);
-				col *= m_CloudsTint;
+				col *= m_CloudTint;
 				Color colEdge = m_CloudsEdgeColor.Evaluate(EvaluateTimeBySun);
-				colEdge *= m_CloudsTint;
+				colEdge *= m_CloudTint;
 
 				if(m_NightRayleighMode == LSky_NightRayleighMode.Moon)
 					col += m_CloudsMoonColor.Evaluate(EvaluateTimeByMoon)*MoonPhasesIntensityMultiplier;
@@ -1681,10 +1681,10 @@ namespace Rallec.LSky
 			set{ m_DomeRadius = value; }
 		}
 
-        public Color CloudsTint
+        public Color CloudTint
 		{
-			get { return m_CloudsTint; }
-			set { m_CloudsTint = value;}
+			get { return m_CloudTint; }
+			set { m_CloudTint = value;}
 		}
 
 		public float CloudCoverage
@@ -1693,13 +1693,25 @@ namespace Rallec.LSky
 			set { m_CloudsCoverage = value; }
 		}
 
-        public float CloudDensity
+        public float CloudNoisePower
 		{
 			get { return m_CloudsNoisePower; }
 			set { m_CloudsNoisePower = value;}
 		}
 
-		public float WavelengthR
+        public float CloudMeshHeightSize
+        {
+            get { return m_CloudsMeshHeightSize; }
+            set { m_CloudsMeshHeightSize = value; }
+        }
+
+        public float CloudNoiseScale
+        {
+            get { return m_CloudsNoiseScale; }
+            set { m_CloudsNoiseScale = value; }
+        }
+
+        public float WavelengthR
 		{
 			get { return m_WavelengthR; }
 			set { m_WavelengthR = value; }
