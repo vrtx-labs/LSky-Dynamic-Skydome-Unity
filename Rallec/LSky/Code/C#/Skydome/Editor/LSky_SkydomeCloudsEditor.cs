@@ -114,7 +114,7 @@ namespace Rallec.LSky
 			m_CloudsMoonColor = serObj.FindProperty("m_CloudsMoonColor");
 			m_CloudsEdgeColor = serObj.FindProperty("m_CloudsEdgeColor");
 			m_CloudsEdgeColorHeight = serObj.FindProperty("m_CloudsEdgeColorHeight");
-            m_CloudsTint = serObj.FindProperty("m_CloudTint");
+            m_CloudsTint = serObj.FindProperty("m_CloudsTint");
 			//=======================================================================
 
 			// Shape.
