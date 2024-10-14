@@ -799,28 +799,28 @@ namespace Rallec.LSky
 
 			// Deep Space
 			//------------------------------------------------------------------------------------------------
-			m_GalaxyBackgroundTransform.Instantiate(this.name, "Galaxy Background Transform");
+			m_GalaxyBackgroundTransform.Instantiate(m_Transform, "Galaxy Background Transform");
 			m_GalaxyBackgroundTransform.InitTransform(m_Transform, Vector3.zero);
 
-			m_StarsFieldTransform.Instantiate(this.name, "Stars Field Transform");
+			m_StarsFieldTransform.Instantiate(this.m_Transform, "Stars Field Transform");
 			m_StarsFieldTransform.InitTransform(m_Transform, Vector3.zero);
 			//================================================================================================
 
 			// Near Space
 			//------------------------------------------------------------------------------------------------
-			m_SunTransform.Instantiate(this.name, "Sun Transform");
+			m_SunTransform.Instantiate(this.m_Transform, "Sun Transform");
 			m_SunTransform.InitTransform(m_Transform, Vector3.zero);
 			//------------------------------------------------------------------------------------------------
 
-			m_MoonTransform.Instantiate(this.name, "Moon Transform");
+			m_MoonTransform.Instantiate(this.m_Transform, "Moon Transform");
 			m_MoonTransform.InitTransform(m_Transform, Vector3.zero);
 			//------------------------------------------------------------------------------------------------
 
-			m_NearSpaceTransform.Instantiate(this.name, "Near Space Transform");
+			m_NearSpaceTransform.Instantiate(this.m_Transform, "Near Space Transform");
 			m_NearSpaceTransform.InitTransform(m_Transform, Vector3.zero);
 			//------------------------------------------------------------------------------------------------
 
-			m_MoonCamera.InstantiateCamera(m_MoonTransform.gameObject.name, "Moon Render Camera");
+			m_MoonCamera.InstantiateCamera(m_MoonTransform.transform, "Moon Render Camera");
 			m_MoonCamera.InitTransform(m_MoonTransform.transform, new Vector3(0, 0, 2));
 			m_MoonCamera.transform.localEulerAngles = new Vector3(0, 180, 0);
 			InitMoonCamera();
@@ -828,19 +828,19 @@ namespace Rallec.LSky
 
 			// Atmosphere
 			//-------------------------------------------------------------------------------------------------
-			m_AtmosphereTransform.Instantiate(this.name, "Atmosphere Transform");
+			m_AtmosphereTransform.Instantiate(this.m_Transform, "Atmosphere Transform");
 			m_AtmosphereTransform.InitTransform(m_Transform, Vector3.zero);
 			//=================================================================================================
 
 			// Clouds
 			//-------------------------------------------------------------------------------------------------
-			m_CloudsTransform.Instantiate(this.name, "Clouds Transform");
+			m_CloudsTransform.Instantiate(this.m_Transform, "Clouds Transform");
 			m_CloudsTransform.InitTransform(m_Transform, Vector3.zero);
 			//=================================================================================================
 
 			// Light
 			//-------------------------------------------------------------------------------------------------
-			m_CelestialsLight.InstantiateLight(this.name, "Celestials Light");
+			m_CelestialsLight.InstantiateLight(this.m_Transform, "Celestials Light");
 			m_CelestialsLight.InitTransform(m_Transform, Vector3.zero);
 			m_CelestialsLight.light.type = LightType.Directional;
 			//=================================================================================================

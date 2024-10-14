@@ -47,8 +47,20 @@ namespace Rallec.LSky
 
         }
 
+        public void InstantiateLight(Transform parentTransform, string lightName)
+        {
 
-		
-	}
+            Instantiate(parentTransform, lightName);
+
+            var l = gameObject.GetComponent<Light>();
+
+            if (l != null)
+                light = l;
+            else
+                light = gameObject.AddComponent<Light>();
+
+        }
+
+    }
 
 }
