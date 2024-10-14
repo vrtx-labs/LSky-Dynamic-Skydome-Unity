@@ -9,6 +9,7 @@
 
 
 using System;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 
@@ -43,7 +44,9 @@ namespace Rallec.LSky
 
             if(transform == null) return;
 
-            transform.parent        = parent;
+            //skip setting parent when in prefab edit mode to avoid errors
+            if (PrefabStageUtility.GetCurrentPrefabStage() == null)
+                transform.parent        = parent;
             transform.position      = Vector3.zero + posOffset;
             transform.localPosition = Vector3.zero + posOffset;
             transform.rotation      = Quaternion.identity;
