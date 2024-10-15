@@ -9,8 +9,11 @@
 
 
 using System;
-using UnityEditor.SceneManagement;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
 
 
 namespace Rallec.LSky
@@ -44,6 +47,7 @@ namespace Rallec.LSky
 
             if (transform == null) return;
 
+#if UNITY_EDITOR
             if (PrefabStageUtility.GetCurrentPrefabStage() != null && transform.parent != parent)
             {
                 Debug.LogWarning($"Transform cannot be correctly initialised within a prefab. Please set the parent of {gameObject.name} to {parent.name} manually");
@@ -51,7 +55,8 @@ namespace Rallec.LSky
 
             //skip setting parent when in prefab edit mode to avoid errors
             if (PrefabStageUtility.GetCurrentPrefabStage() == null)
-                transform.parent = parent;
+#endif
+            transform.parent = parent;
             transform.position = Vector3.zero + posOffset;
             transform.localPosition = Vector3.zero + posOffset;
             transform.rotation = Quaternion.identity;
