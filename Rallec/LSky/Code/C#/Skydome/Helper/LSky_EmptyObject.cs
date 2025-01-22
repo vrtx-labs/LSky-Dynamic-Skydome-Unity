@@ -90,10 +90,10 @@ namespace Rallec.LSky
             if (gameObject == null)
             {
                 // Check if exist gameobject with this name.
-                var childObj = parentTransform.Find(name).gameObject;
+                Transform childObj = parentTransform.Find(name);
 
                 if (childObj != null)
-                    gameObject = childObj;
+                    gameObject = childObj.gameObject;
                 else
                     gameObject = new GameObject(name);
             }
